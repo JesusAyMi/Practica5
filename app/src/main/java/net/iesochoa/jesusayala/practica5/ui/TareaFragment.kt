@@ -39,6 +39,8 @@ class TareaFragment : Fragment() {
 
         iniciaSpCategoria()
         iniciaSpPrioridad()
+        iniciaSwPagado()
+        iniciaRgEstado()
 
         /*binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
@@ -109,5 +111,33 @@ class TareaFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun iniciaSwPagado() {
+        binding.swPagado.setOnCheckedChangeListener { _, isChecked ->
+            //cambiamos el icono si está marcado o no el switch
+            val imagen=if (isChecked) R.drawable.ic_pagado
+            else R.drawable.ic_no_pagado
+            //asignamos la imagen desde recursos
+            binding.ivPagado.setImageResource(imagen)
+        }
+        //iniciamos a valor false
+        binding.swPagado.isChecked=false
+        binding.ivPagado.setImageResource(R.drawable.ic_no_pagado)
+    }
+
+    private fun iniciaRgEstado() {
+        //listener de radioGroup
+        binding.rgEstado.setOnCheckedChangeListener { _, checkedId ->
+            val imagen= when (checkedId){//el id del RadioButton seleccionado
+                //id del cada RadioButon
+                R.id.rbAbierta-> R.drawable.ic_abierto
+                R.id.rbEnCurso->R.drawable.ic_encurso
+                else-> R.drawable.ic_cerrado
+            }
+            binding.ivEstado.setImageResource(imagen)
+        }
+        //iniciamos a abierto
+        binding.rgEstado.check(R.id.rbAbierta)
     }
 }
