@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SeekBar
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import net.iesochoa.jesusayala.practica5.R
@@ -41,6 +42,7 @@ class TareaFragment : Fragment() {
         iniciaSpPrioridad()
         iniciaSwPagado()
         iniciaRgEstado()
+        iniciaSbHoras()
 
         /*binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
@@ -139,5 +141,22 @@ class TareaFragment : Fragment() {
         }
         //iniciamos a abierto
         binding.rgEstado.check(R.id.rbAbierta)
+    }
+
+    private fun iniciaSbHoras() {
+        //asignamos el evento
+        binding.sbHorasTrabajadas.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(p0: SeekBar?, progreso: Int, p2: Boolean) {
+                //Mostramos el progreso en el textview
+                binding.tvHorasTrabajadas.text=getString(R.string.horas_trabajadas,progreso)
+            }
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+        })
+        //inicio del progreso
+        binding.sbHorasTrabajadas.progress=0
+        binding.tvHorasTrabajadas.text=getString(R.string.horas_trabajadas,0)
     }
 }
