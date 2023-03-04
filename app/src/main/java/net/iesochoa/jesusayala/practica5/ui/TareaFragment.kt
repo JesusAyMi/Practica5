@@ -1,4 +1,4 @@
-package net.iesochoa.jesusayala.practica5
+package net.iesochoa.jesusayala.practica5.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,14 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import net.iesochoa.jesusayala.practica5.databinding.FragmentSecondBinding
+import net.iesochoa.jesusayala.practica5.R
+import net.iesochoa.jesusayala.practica5.databinding.FragmentTareaBinding
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class SecondFragment : Fragment() {
+class TareaFragment : Fragment() {
 
-    private var _binding: FragmentSecondBinding? = null
+    private var _binding: FragmentTareaBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -24,7 +25,7 @@ class SecondFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentSecondBinding.inflate(inflater, container, false)
+        _binding = FragmentTareaBinding.inflate(inflater, container, false)
         return binding.root
 
     }
