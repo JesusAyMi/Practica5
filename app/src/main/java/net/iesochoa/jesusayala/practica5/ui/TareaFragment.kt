@@ -9,10 +9,15 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import net.iesochoa.jesusayala.practica5.R
 import net.iesochoa.jesusayala.practica5.databinding.FragmentTareaBinding
+import net.iesochoa.jesusayala.practica5.model.Tarea
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -24,6 +29,11 @@ class TareaFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    val args: TareaFragmentArgs by navArgs()
+    private val viewModel: ViewModel by activityViewModels()
+    //será una tarea nueva si no hay argumento
+    val esNuevo by lazy { args.tarea==null }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,9 +54,20 @@ class TareaFragment : Fragment() {
         iniciaRgEstado()
         iniciaSbHoras()
 
+        /*//si es nueva tarea o es una edicion
+        if (esNuevo)//nueva tarea
+            //cambiamos el título de la ventana
+            (requireActivity() as AppCompatActivity).supportActionBar?.title = "Nueva Tarea"
+        else
+            iniciaTarea(args.Tarea!!)*/
+
         /*binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
         }*/
+    }
+
+    private fun iniciaTarea(tarea: Tarea) {
+
     }
 
     override fun onDestroyView() {

@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import net.iesochoa.jesusayala.practica5.R
 import net.iesochoa.jesusayala.practica5.databinding.FragmentListaBinding
 import net.iesochoa.jesusayala.practica5.model.Tarea
 import net.iesochoa.jesusayala.practica5.model.viewModel.ViewModels
@@ -46,15 +46,21 @@ class ListaFragment : Fragment() {
 
 
         binding.fabNuevo.setOnClickListener {
-            ///val action = ListaFragmentDirections.actionListaFragmentToTareaFragment(null)
-            findNavController().navigate(R.id.action_editar)
+            val action = ListaFragmentDirections.actionEditar(null)
+            findNavController().navigate(action)
+
+            (requireActivity() as AppCompatActivity).supportActionBar?.title = "Nueva tarea"
         }
 
         binding.btPruebaEdicion.setOnClickListener{
             val lista = viewModel.tareasLiveData.value
-            val tarea = lista?.randomOrNull()
-            //val action = ListaFragmentDirections.actionListaFragmentToTareaFragment(tarea)
-            //findNavController().navigate(action)
+            val tarea = lista?.random()
+            val action = ListaFragmentDirections.actionEditar(tarea)
+            findNavController().navigate(action)
+
+            if (tarea != null) {
+                (requireActivity() as AppCompatActivity).supportActionBar?.title = "Tarea " + tarea.id
+            }
         }
 
         viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
@@ -62,8 +68,6 @@ class ListaFragment : Fragment() {
         })
 
     }
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
