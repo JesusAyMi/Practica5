@@ -12,12 +12,14 @@ import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import net.iesochoa.jesusayala.practica5.R
 import net.iesochoa.jesusayala.practica5.databinding.FragmentTareaBinding
 import net.iesochoa.jesusayala.practica5.model.Tarea
+import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas
+import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas.borrarTarea
+import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas.modificarTarea
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -54,12 +56,16 @@ class TareaFragment : Fragment() {
         iniciaRgEstado()
         iniciaSbHoras()
 
-        /*//si es nueva tarea o es una edicion
+        binding.fabSave.setOnClickListener {
+            comprobarDatosYGuardar()
+        }
+
+        //si es nueva tarea o es una edicion
         if (esNuevo)//nueva tarea
             //cambiamos el título de la ventana
             (requireActivity() as AppCompatActivity).supportActionBar?.title = "Nueva Tarea"
         else
-            iniciaTarea(args.Tarea!!)*/
+            iniciaTarea(args.tarea!!)
 
         /*binding.buttonSecond.setOnClickListener {
             findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
@@ -67,6 +73,37 @@ class TareaFragment : Fragment() {
     }
 
     private fun iniciaTarea(tarea: Tarea) {
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Tarea " + tarea.id
+
+        var categoria = binding.spCategoria
+        categoria.setSelection(tarea.categoria)
+
+        var prioridad = binding.spPrioridad
+        prioridad.setSelection(tarea.prioridad)
+
+        var pagado = binding.swPagado
+        pagado.isChecked = tarea.pagado
+
+        var abierto = binding.rbAbierta
+        var enCurso = binding.rbEnCurso
+        var cerrado = binding.rbCerrada
+        when (tarea.estado) {
+            0 -> abierto.isChecked
+            1 -> enCurso.isChecked
+            2 -> cerrado.isChecked
+        }
+
+        var horas = binding.sbHorasTrabajadas
+        horas.setProgress(tarea.horas)
+
+        var valoracion = binding.rbValoracion
+        valoracion.setRating(tarea.valoracion)
+
+        var tecnico = binding.etTecnico
+        tecnico.setText(tarea.tecnico)
+
+        var descripcion = binding.etDescripcion
+        descripcion.setText(tarea.descripcion)
 
     }
 
@@ -179,5 +216,45 @@ class TareaFragment : Fragment() {
         //inicio del progreso
         binding.sbHorasTrabajadas.progress=0
         binding.tvHorasTrabajadas.text=getString(R.string.horas_trabajadas,0)
+    }
+
+    private fun comprobarDatosYGuardar(){
+        if (binding.etTecnico.text.toString().isNullOrEmpty() || binding.etDescripcion.text.toString().isNullOrEmpty())
+            Snackbar.make(binding.root, "Es necesario rellenar todos los campos",
+                Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        else
+            guardaTarea()
+    }
+
+    private fun guardaTarea() {
+        //recuperamos los datos
+        val categoria=binding.spCategoria.selectedItemPosition
+        val prioridad=binding.spPrioridad.selectedItemPosition
+        val pagado=binding.swPagado.isChecked
+        val estado=when (binding.rgEstado.checkedRadioButtonId) {
+            R.id.rbAbierta -> 0
+            R.id.rbEnCurso -> 1
+            else -> 2
+        }
+        val horas=binding.sbHorasTrabajadas.progress
+        val valoracion=binding.rbValoracion.rating
+        val tecnico=binding.etTecnico.text.toString()
+        val descripcion=binding.etDescripcion.text.toString()
+
+
+
+        //creamos la tarea: si es nueva, generamos un id, en otro caso le asignamos su id
+        lateinit var tareaNueva: Tarea
+        if (esNuevo)//nueva tarea
+            tareaNueva = Tarea(Tarea.contadorTareas+1, categoria, prioridad, pagado, estado, horas, valoracion, tecnico, descripcion)
+        else {
+            tareaNueva = Tarea(args.tarea?.id,categoria, prioridad, pagado, estado, horas, valoracion, tecnico, descripcion)
+            modificarTarea(args.tarea!!, tareaNueva)
+            borrarTarea(args.tarea!!)
+        }
+
+        ModelTempTareas.tareas.add(tareaNueva)
+        ModelTempTareas.tareas = ModelTempTareas.tareas
+
     }
 }

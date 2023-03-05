@@ -9,9 +9,9 @@ import kotlin.random.Random
 object ModelTempTareas {
 
     //lista de tareas
-    private val tareas = ArrayList<Tarea>()
+    var tareas = ArrayList<Tarea>()
     //LiveData para observar en la vista los cambios en la lista
-    private val tareasLiveData = MutableLiveData<List<Tarea>>(tareas)
+    val tareasLiveData = MutableLiveData<List<Tarea>>(tareas)
     //el context que suele ser necesario en acceso a datos
     private lateinit var application: Application
 
@@ -44,7 +44,7 @@ object ModelTempTareas {
                 (0..30).random(),
                 (0..5).random().toFloat(),
                 tecnicos.random(),
-                "tarea $it realizada por el técnico \nLorem ipsum dolor sit amet, " +
+                "Lorem ipsum dolor sit amet, " +
                         "consectetur adipiscing elit. Mauris consequat ligula et vehicula" +
                         " mattis. Etiam tristique ornare lacinia. Vestibulum lacus magna," +
                         " dignissim et tempor id, convallis sed augue"
@@ -57,6 +57,15 @@ object ModelTempTareas {
 
     fun borrarTarea(tarea: Tarea) {
         tareas.remove(tarea)
+        tareasLiveData.value = tareas
+    }
+
+    fun modificarTarea(tareaAnterior: Tarea, tareaNueva: Tarea) {
+        // Buscamos la tarea anterior en la lista de tareas
+        val posicion = tareas.indexOf(tareaAnterior)
+        // Reemplazamos la tarea anterior por la nueva
+        tareas[posicion] = tareaNueva
+        //actualizamos el LiveData
         tareasLiveData.value = tareas
     }
 }

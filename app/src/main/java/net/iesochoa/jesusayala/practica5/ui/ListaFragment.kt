@@ -49,7 +49,7 @@ class ListaFragment : Fragment() {
             val action = ListaFragmentDirections.actionEditar(null)
             findNavController().navigate(action)
 
-            (requireActivity() as AppCompatActivity).supportActionBar?.title = "Nueva tarea"
+            //(requireActivity() as AppCompatActivity).supportActionBar?.title = "Nueva tarea"
         }
 
         binding.btPruebaEdicion.setOnClickListener{
@@ -59,7 +59,7 @@ class ListaFragment : Fragment() {
             findNavController().navigate(action)
 
             if (tarea != null) {
-                (requireActivity() as AppCompatActivity).supportActionBar?.title = "Tarea " + tarea.id
+                //(requireActivity() as AppCompatActivity).supportActionBar?.title = "Tarea " + tarea.id
             }
         }
 
