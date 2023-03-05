@@ -68,4 +68,13 @@ object ModelTempTareas {
         //actualizamos el LiveData
         tareasLiveData.value = tareas
     }
+
+    fun getTareasFiltroSinPagar(soloSinPagar: Boolean): LiveData<List<Tarea>> {
+        val tareasFiltradas = if (soloSinPagar) {
+            tareas.filter { !it.pagado }
+        } else {
+            tareas
+        }
+        return MutableLiveData<List<Tarea>>(tareasFiltradas)
+    }
 }

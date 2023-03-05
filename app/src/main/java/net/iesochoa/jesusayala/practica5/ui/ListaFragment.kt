@@ -44,6 +44,7 @@ class ListaFragment : Fragment() {
 
         tvLista = binding.tvLista
 
+        iniciaFiltros()
 
         binding.fabNuevo.setOnClickListener {
             val action = ListaFragmentDirections.actionEditar(null)
@@ -79,5 +80,12 @@ class ListaFragment : Fragment() {
         for (tarea in lista) {
             tvLista.append("Tarea ${tarea.id} realizada por ${tarea.tecnico}\n")
         }
+    }
+
+    private fun iniciaFiltros(){
+        binding.swSinPagar.setOnCheckedChangeListener( ) { _,isChecked->
+            //actualiza el LiveData SoloSinPagarLiveData que a su vez modifica tareasLiveData
+            //mediante el Transformation
+            viewModel.setSoloSinPagar(isChecked)}
     }
 }
