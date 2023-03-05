@@ -46,7 +46,15 @@ class ListaFragment : Fragment() {
 
 
         binding.fabNuevo.setOnClickListener {
+            ///val action = ListaFragmentDirections.actionListaFragmentToTareaFragment(null)
             findNavController().navigate(R.id.action_editar)
+        }
+
+        binding.btPruebaEdicion.setOnClickListener{
+            val lista = viewModel.tareasLiveData.value
+            val tarea = lista?.randomOrNull()
+            //val action = ListaFragmentDirections.actionListaFragmentToTareaFragment(tarea)
+            //findNavController().navigate(action)
         }
 
         viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
