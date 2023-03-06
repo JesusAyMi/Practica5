@@ -12,14 +12,30 @@ import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas.tareas
 class TareasAdapter ()
     : RecyclerView.Adapter<TareasAdapter.TareaViewHolder>(){
     var listaTareas: List<Tarea>?=null
+    private var onTareaClickListener:OnTareaClickListener?=null
     fun setLista(lista:List<Tarea>){
         listaTareas=lista
         //notifica al adaptador que hay cambios y tiene que redibujar el ReciclerView
         notifyDataSetChanged()
     }
 
-    inner class TareaViewHolder(val binding: ItemTareaBinding)
-        :RecyclerView.ViewHolder(binding.root)
+    inner class TareaViewHolder(val binding: ItemTareaBinding) :
+        RecyclerView.ViewHolder(binding.root){
+        init {
+            //inicio del click de icono borrar
+            binding.ivBorrar.setOnClickListener(){
+                //recuperamos la tarea de la lista
+                val tarea= listaTareas?.get(this.adapterPosition)
+                //llamamos al evento borrar que estará definido en el fragment
+                onTareaClickListener?.onTareaBorrarClick(tarea)
+            }
+            //inicio del click sobre el Layout(constraintlayout)
+            binding.root.setOnClickListener(){
+                val tarea= listaTareas?.get(this.adapterPosition)
+                onTareaClickListener?.onTareaClick(tarea)
+            }
+        }
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             TareaViewHolder {
         val binding = ItemTareaBinding
@@ -56,5 +72,12 @@ class TareasAdapter ()
     }
     override fun getItemCount(): Int {
         return tareas.size
+    }
+
+    interface OnTareaClickListener{
+        //editar tarea que contiene el ViewHolder
+        fun onTareaClick(tarea:Tarea?)
+        //borrar tarea que contiene el ViewHolder
+        fun onTareaBorrarClick(tarea:Tarea?)
     }
 }

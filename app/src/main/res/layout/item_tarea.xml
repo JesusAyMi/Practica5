@@ -59,7 +59,7 @@
             tools:text="Perico Fernandez" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/ivBorrar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="64dp"
