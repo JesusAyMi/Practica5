@@ -42,7 +42,7 @@ class ListaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tvLista = binding.tvLista
+        //tvLista = binding.tvLista
 
         iniciaFiltros()
 
@@ -53,7 +53,7 @@ class ListaFragment : Fragment() {
             //(requireActivity() as AppCompatActivity).supportActionBar?.title = "Nueva tarea"
         }
 
-        binding.btPruebaEdicion.setOnClickListener{
+        /*binding.btPruebaEdicion.setOnClickListener{
             val lista = viewModel.tareasLiveData.value
             val tarea = lista?.random()
             val action = ListaFragmentDirections.actionEditar(tarea)
@@ -62,7 +62,7 @@ class ListaFragment : Fragment() {
             if (tarea != null) {
                 //(requireActivity() as AppCompatActivity).supportActionBar?.title = "Tarea " + tarea.id
             }
-        }
+        }*/
 
         viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
             actualizaLista(lista)
