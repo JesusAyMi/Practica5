@@ -4,7 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import net.iesochoa.jesusayala.practica5.model.Tarea
+import kotlin.random.Random
 
 @Database(entities = arrayOf(Tarea::class), version = 1, exportSchema = false)
 public abstract class TareasDataBase: RoomDatabase() {
@@ -20,9 +24,48 @@ public abstract class TareasDataBase: RoomDatabase() {
                     TareasDataBase::class.java,
                     "tareas_database"
                 )
+                    .addCallback(InicioDbCallback())
                     .build()
                 INSTANCE = instance
                 instance
+            }
+        }
+    }
+    //***************CallBack******************************
+    /**
+     * Permite iniciar la base de datos con Tareas
+     */
+    private class InicioDbCallback() : RoomDatabase.Callback() {
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            super.onCreate(db)
+            INSTANCE?.let { database ->
+                GlobalScope.launch {
+                    cargarDatabase(database.tareasDao())
+                }
+            }
+        }
+        //Iniciamos la base de datos con Tareas de ejemplo
+        suspend fun cargarDatabase(tareasDao: TareasDao) {
+            val tecnicos = listOf(
+                "Pepe Gotero",
+                "Sacarino Pómez",
+                "Mortadelo Fernández",
+                "Filemón López",
+                "Zipi Climent",
+                "Zape Gómez"
+            )
+            lateinit var tarea: Tarea
+            (1..10).forEach {
+
+                tarea = Tarea(
+                    (0..4).random(), (0..2).random(), Random.nextBoolean(),
+                    (0..2).random(), (0..30).random(), (0..5).random().toFloat(),
+                    tecnicos.random(), "tarea$it realizada por el técnico \nLorem ipsum dolor sit" +
+                            " amet, consectetur adipiscing elit. Mauris consequat ligula et vehicula " +
+                            "mattis. Etiam tristique ornare lacinia. Vestibulum lacus magna, " +
+                            "dignissim et tempor id, convallis sed augue"
+                )
+                tareasDao.addTarea(tarea)
             }
         }
     }

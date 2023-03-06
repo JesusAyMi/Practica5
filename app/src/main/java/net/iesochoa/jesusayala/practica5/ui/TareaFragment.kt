@@ -250,19 +250,21 @@ class TareaFragment : Fragment() {
 
         //creamos la tarea: si es nueva, generamos un id, en otro caso le asignamos su id
         lateinit var tareaNueva: Tarea
-        if (esNuevo)//nueva tarea
-            tareaNueva = Tarea(Tarea.contadorTareas+1, categoria, prioridad, pagado, estado, horas, valoracion, tecnico, descripcion)
+        if (esNuevo) {//nueva tarea
+            var numTareas: Long;
+            runBlocking { numTareas = Repository.getNumTareas() }
+            tareaNueva =
+                Tarea(numTareas+1,categoria, prioridad, pagado, estado, horas, valoracion, tecnico, descripcion)
+            runBlocking { Repository.addTareas(tareaNueva)}
+        }
         else {
             tareaNueva = Tarea(args.tarea?.id,categoria, prioridad, pagado, estado, horas, valoracion, tecnico, descripcion)
-
             // Reemplazamos la tarea anterior por la nueva
-            runBlocking { Repository.addTareas(tareaNueva) }
+            runBlocking { Repository.updateTareas(tareaNueva) }
             //actualizamos el LiveData
             ModelTempTareas.tareasLiveData.value = ModelTempTareas.tareas
 
             //runBlocking { Repository.borrarTarea(args.tarea!!) }
         }
-
-        runBlocking { Repository.addTareas(tareaNueva) }
     }
 }
