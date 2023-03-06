@@ -1,6 +1,7 @@
 package net.iesochoa.jesusayala.practica5.ui
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -113,14 +115,33 @@ class ListaFragment : Fragment() {
             //***********Borrar Tarea************
             override fun onTareaBorrarClick(tarea: Tarea?) {
                 if (tarea != null) {
-                    Repository.borrarTarea(tarea)
-                    viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
-                        //actualizaLista(lista)
-                        tareasAdapter.setLista(lista)
-                    })
+                    borrarTarea(tarea)
                 }
             }
         }
 
+    }
+
+    fun borrarTarea(tarea:Tarea){
+        AlertDialog.Builder(activity as Context)
+            .setTitle(android.R.string.dialog_alert_title)
+            //recuerda: todo el texto en string.xml
+            .setMessage("Desea borrar la Tarea ${tarea.id}?")
+            //acción si pulsa si
+            .setPositiveButton(android.R.string.ok){v,_->
+                //borramos la tarea
+                viewModel.borrarTarea(tarea)
+                //cerramos el dialogo
+                v.dismiss()
+                viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
+                    //actualizaLista(lista)
+                    tareasAdapter.setLista(lista)
+                })
+            }
+            //accion si pulsa no
+            .setNegativeButton(android.R.string.cancel){v,_->v.dismiss()}
+            .setCancelable(false)
+            .create()
+            .show()
     }
 }
