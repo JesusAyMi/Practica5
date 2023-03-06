@@ -1,12 +1,10 @@
 package net.iesochoa.jesusayala.practica5.model.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import net.iesochoa.jesusayala.practica5.model.Tarea
 
+@Dao
 interface TareasDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
