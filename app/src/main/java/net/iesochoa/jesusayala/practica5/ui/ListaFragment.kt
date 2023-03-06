@@ -1,6 +1,7 @@
 package net.iesochoa.jesusayala.practica5.ui
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,9 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import net.iesochoa.jesusayala.practica5.R
 import net.iesochoa.jesusayala.practica5.databinding.FragmentListaBinding
+import net.iesochoa.jesusayala.practica5.databinding.ItemTareaBinding
 import net.iesochoa.jesusayala.practica5.model.Tarea
 import net.iesochoa.jesusayala.practica5.model.viewModel.ViewModels
+import net.iesochoa.jesusayala.practica5.ui.adapters.TareasAdapter
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -21,12 +27,13 @@ import net.iesochoa.jesusayala.practica5.model.viewModel.ViewModels
 class ListaFragment : Fragment() {
 
     private var _binding: FragmentListaBinding? = null
-    private lateinit var tvLista: TextView
     private val viewModel: ViewModels by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    lateinit var tareasAdapter: TareasAdapter
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
@@ -42,27 +49,18 @@ class ListaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //tvLista = binding.tvLista
-
+        iniciaRecyclerView()
         iniciaFiltros()
+
+        viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
+            //actualizaLista(lista)
+            tareasAdapter.setLista(lista)
+        })
 
         binding.fabNuevo.setOnClickListener {
             val action = ListaFragmentDirections.actionEditar(null)
             findNavController().navigate(action)
-
-            //(requireActivity() as AppCompatActivity).supportActionBar?.title = "Nueva tarea"
         }
-
-        /*binding.btPruebaEdicion.setOnClickListener{
-            val lista = viewModel.tareasLiveData.value
-            val tarea = lista?.random()
-            val action = ListaFragmentDirections.actionEditar(tarea)
-            findNavController().navigate(action)
-
-            if (tarea != null) {
-                //(requireActivity() as AppCompatActivity).supportActionBar?.title = "Tarea " + tarea.id
-            }
-        }*/
 
         viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
             actualizaLista(lista)
@@ -76,9 +74,9 @@ class ListaFragment : Fragment() {
     }
 
     private fun actualizaLista(lista: List<Tarea>){
-        tvLista.text = ""
+        //tvLista.text = ""
         for (tarea in lista) {
-            tvLista.append("Tarea ${tarea.id} realizada por ${tarea.tecnico}\n")
+            //tvLista.append("Tarea ${tarea.id} realizada por ${tarea.tecnico}\n")
         }
     }
 
@@ -87,5 +85,18 @@ class ListaFragment : Fragment() {
             //actualiza el LiveData SoloSinPagarLiveData que a su vez modifica tareasLiveData
             //mediante el Transformation
             viewModel.setSoloSinPagar(isChecked)}
+    }
+
+
+    private fun iniciaRecyclerView() {
+        //creamos el adaptador
+        tareasAdapter = TareasAdapter()
+
+        with(binding.rvTareas) {
+            //Creamos el layoutManager
+            layoutManager = LinearLayoutManager(activity)
+            //le asignamos el adaptador
+            adapter = tareasAdapter
+        }
     }
 }

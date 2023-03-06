@@ -16,7 +16,7 @@
 
 
         <ImageView
-            android:id="@+id/icEstado"
+            android:id="@+id/ivEst"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -33,7 +33,7 @@
             android:layout_marginTop="9dp"
             android:ellipsize="end"
             android:maxLines="2"
-            app:layout_constraintStart_toEndOf="@+id/icEstado"
+            app:layout_constraintStart_toEndOf="@+id/ivEst"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Reparación de la impresora de la planta 23 de IBM en la que se han cambiado los cartuchos y el cable de alimentación" />
 
