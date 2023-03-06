@@ -24,7 +24,7 @@ class ViewModels (application: Application) : AndroidViewModel(application) {
         {soloSinPagar->Repository.getTareasFiltroSinPagar(soloSinPagar)}
     }
 
-    fun borrarTarea(tarea: Tarea) = Repository.modelTareas.borrarTarea(tarea)
+    suspend fun borrarTarea(tarea: Tarea) = Repository.modelTareas.borrarTarea(tarea)
     fun addTareas(tarea: Tarea) = Repository.modelTareas.iniciaPruebaTareas()
     fun getAllTareas(tarea: Tarea) = Repository.modelTareas.getAllTareas()
 

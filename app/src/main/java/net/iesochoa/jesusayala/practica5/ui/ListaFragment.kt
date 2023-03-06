@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.runBlocking
 import net.iesochoa.jesusayala.practica5.R
 import net.iesochoa.jesusayala.practica5.databinding.FragmentListaBinding
 import net.iesochoa.jesusayala.practica5.databinding.ItemTareaBinding
@@ -130,7 +131,9 @@ class ListaFragment : Fragment() {
             //acción si pulsa si
             .setPositiveButton(android.R.string.ok){v,_->
                 //borramos la tarea
-                viewModel.borrarTarea(tarea)
+                runBlocking {
+                    viewModel.borrarTarea(tarea)
+                }
                 //cerramos el dialogo
                 v.dismiss()
                 viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->

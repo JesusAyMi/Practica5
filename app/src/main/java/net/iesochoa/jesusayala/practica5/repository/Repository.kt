@@ -19,7 +19,7 @@ object Repository {
         modelTareas=ModelTempTareas
     }
 
-    fun borrarTarea(tarea: Tarea) = modelTareas.borrarTarea(tarea)
+    suspend fun borrarTarea(tarea: Tarea) = modelTareas.borrarTarea(tarea)
     fun addTareas(tarea: Tarea) = modelTareas.iniciaPruebaTareas()
     fun getAllTareas() = modelTareas.getAllTareas()
     fun getTareasFiltroSinPagar (soloSinPagar:Boolean) = modelTareas.getTareasFiltroSinPagar(soloSinPagar)

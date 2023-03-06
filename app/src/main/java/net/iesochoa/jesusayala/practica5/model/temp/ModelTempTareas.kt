@@ -57,7 +57,7 @@ object ModelTempTareas {
 
     fun borrarTarea(tarea: Tarea) {
         tareas.remove(tarea)
-        tareasLiveData.value = tareas
+        tareasLiveData.postValue(tareas)
     }
 
     fun modificarTarea(tareaAnterior: Tarea, tareaNueva: Tarea) {
