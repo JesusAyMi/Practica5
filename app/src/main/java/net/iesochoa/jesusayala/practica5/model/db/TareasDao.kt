@@ -11,8 +11,13 @@ interface TareasDao {
     suspend fun addTarea(tarea: Tarea)
     @Delete
     suspend fun delTarea(tarea: Tarea)
+    @Update
+    suspend fun updateTarea(tarea: Tarea)
 
     @Query("SELECT * FROM tareas WHERE pagado= :soloSinPagar")
     fun getTareasFiltroSinPagar(soloSinPagar:Boolean): LiveData<List<Tarea>>
+
+    @Query("SELECT * FROM tareas")
+    fun getAllTareas(): LiveData<List<Tarea>>
 
 }

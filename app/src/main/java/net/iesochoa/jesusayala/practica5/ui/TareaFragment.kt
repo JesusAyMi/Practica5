@@ -15,12 +15,12 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.runBlocking
 import net.iesochoa.jesusayala.practica5.R
 import net.iesochoa.jesusayala.practica5.databinding.FragmentTareaBinding
 import net.iesochoa.jesusayala.practica5.model.Tarea
 import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas
-import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas.borrarTarea
-import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas.modificarTarea
+import net.iesochoa.jesusayala.practica5.repository.Repository
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -58,7 +58,8 @@ class TareaFragment : Fragment() {
         iniciaSbHoras()
 
         binding.fabSave.setOnClickListener {
-            comprobarDatosYGuardar()
+            runBlocking { comprobarDatosYGuardar() }
+
         }
 
         //si es nueva tarea o es una edicion
@@ -220,7 +221,7 @@ class TareaFragment : Fragment() {
     }
 
     private fun comprobarDatosYGuardar(){
-        if (binding.etTecnico.text.toString().isNullOrEmpty() || binding.etDescripcion.text.toString().isNullOrEmpty())
+        if (binding.etTecnico.text.toString().isEmpty() || binding.etDescripcion.text.toString().isEmpty())
             Snackbar.make(binding.root, "Es necesario rellenar todos los campos",
                 Snackbar.LENGTH_LONG).setAction("Action", null).show()
         else{
@@ -253,12 +254,15 @@ class TareaFragment : Fragment() {
             tareaNueva = Tarea(Tarea.contadorTareas+1, categoria, prioridad, pagado, estado, horas, valoracion, tecnico, descripcion)
         else {
             tareaNueva = Tarea(args.tarea?.id,categoria, prioridad, pagado, estado, horas, valoracion, tecnico, descripcion)
-            modificarTarea(args.tarea!!, tareaNueva)
-            borrarTarea(args.tarea!!)
+
+            // Reemplazamos la tarea anterior por la nueva
+            runBlocking { Repository.addTareas(tareaNueva) }
+            //actualizamos el LiveData
+            ModelTempTareas.tareasLiveData.value = ModelTempTareas.tareas
+
+            //runBlocking { Repository.borrarTarea(args.tarea!!) }
         }
 
-        ModelTempTareas.tareas.add(tareaNueva)
-        ModelTempTareas.tareas = ModelTempTareas.tareas
-
+        runBlocking { Repository.addTareas(tareaNueva) }
     }
 }

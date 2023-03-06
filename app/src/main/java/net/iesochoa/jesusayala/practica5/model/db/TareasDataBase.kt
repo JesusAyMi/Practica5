@@ -1,7 +1,6 @@
 package net.iesochoa.jesusayala.practica5.model.db
 
 import android.content.Context
-import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -14,15 +13,15 @@ public abstract class TareasDataBase: RoomDatabase() {
     companion object{
         @Volatile
         private var INSTANCE: TareasDataBase? = null
-        fun getDatabase(context: Context): TareasDataBase{
-            return INSTANCE?: synchronized(this){
+        fun getDatabase(context: Context): TareasDataBase {
+            return INSTANCE ?: synchronized(this){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     TareasDataBase::class.java,
                     "tareas_database"
                 )
                     .build()
-                INSTANCE= instance
+                INSTANCE = instance
                 instance
             }
         }

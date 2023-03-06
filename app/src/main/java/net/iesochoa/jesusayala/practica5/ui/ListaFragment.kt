@@ -39,11 +39,13 @@ class ListaFragment : Fragment() {
 
     lateinit var tareasAdapter: TareasAdapter
 
+
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
 
         _binding = FragmentListaBinding.inflate(inflater, container, false)
         return binding.root
