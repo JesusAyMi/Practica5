@@ -26,7 +26,7 @@ class ViewModels (application: Application) : AndroidViewModel(application) {
 
     suspend fun borrarTarea(tarea: Tarea) = Repository.borrarTarea(tarea)
     suspend fun addTareas(tarea: Tarea) = Repository.addTareas(tarea)
-    fun getAllTareas(tarea: Tarea) = Repository.getAllTareas()
+    suspend fun getAllTareas() = Repository.getAllTareas()
 
     //creamos el LiveData de tipo Booleano. Representa nuestro filtro
     fun setSoloSinPagar(soloSinPagar:Boolean){soloSinPagarLiveData.value=soloSinPagar}

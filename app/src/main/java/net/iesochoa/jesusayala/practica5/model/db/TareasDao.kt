@@ -18,7 +18,7 @@ interface TareasDao {
     fun getTareasFiltroSinPagar(soloSinPagar:Boolean): LiveData<List<Tarea>>
 
     @Query("SELECT * FROM tareas")
-     fun getAllTareas(): List<Tarea>
+    suspend fun getAllTareas(): List<Tarea>
 
     @Query("SELECT COUNT(*) FROM tareas")
     suspend fun getNumTareas(): Long

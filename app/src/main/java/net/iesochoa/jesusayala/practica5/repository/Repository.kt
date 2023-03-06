@@ -22,7 +22,7 @@ object Repository {
 
     suspend fun borrarTarea(tarea: Tarea) = modelTareas.delTarea(tarea)
     suspend fun addTareas(tarea: Tarea) = modelTareas.addTarea(tarea)
-     fun getAllTareas() = modelTareas.getAllTareas()
+    suspend fun getAllTareas() = modelTareas.getAllTareas()
     suspend fun updateTareas(tarea: Tarea) = modelTareas.updateTarea(tarea)
     fun getTareasFiltroSinPagar (soloSinPagar:Boolean) = modelTareas.getTareasFiltroSinPagar(soloSinPagar)
     suspend fun getNumTareas() = modelTareas.getNumTareas()

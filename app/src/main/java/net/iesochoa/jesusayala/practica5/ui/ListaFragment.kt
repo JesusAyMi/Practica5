@@ -16,11 +16,16 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.iesochoa.jesusayala.practica5.R
 import net.iesochoa.jesusayala.practica5.databinding.FragmentListaBinding
 import net.iesochoa.jesusayala.practica5.databinding.ItemTareaBinding
 import net.iesochoa.jesusayala.practica5.model.Tarea
+import net.iesochoa.jesusayala.practica5.model.db.TareasDao
+import net.iesochoa.jesusayala.practica5.model.db.TareasDataBase
+import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas
 import net.iesochoa.jesusayala.practica5.model.viewModel.ViewModels
 import net.iesochoa.jesusayala.practica5.repository.Repository
 import net.iesochoa.jesusayala.practica5.ui.adapters.TareasAdapter

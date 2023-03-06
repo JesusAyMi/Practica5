@@ -36,10 +36,12 @@ class TareasAdapter ()
             }
         }
     }
+
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             TareaViewHolder {
-        val binding = ItemTareaBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemTareaBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return TareaViewHolder(binding)
     }
     override fun onBindViewHolder(tareaViewHolder: TareaViewHolder, pos:
@@ -71,7 +73,7 @@ class TareasAdapter ()
         }
     }
     override fun getItemCount(): Int {
-        return tareas.size
+        return listaTareas?.size ?: 0
     }
 
     interface OnTareaClickListener{

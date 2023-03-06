@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -20,7 +21,9 @@ import net.iesochoa.jesusayala.practica5.R
 import net.iesochoa.jesusayala.practica5.databinding.FragmentTareaBinding
 import net.iesochoa.jesusayala.practica5.model.Tarea
 import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas
+import net.iesochoa.jesusayala.practica5.model.viewModel.ViewModels
 import net.iesochoa.jesusayala.practica5.repository.Repository
+import net.iesochoa.jesusayala.practica5.ui.adapters.TareasAdapter
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -28,6 +31,7 @@ import net.iesochoa.jesusayala.practica5.repository.Repository
 class TareaFragment : Fragment() {
 
     private var _binding: FragmentTareaBinding? = null
+    lateinit var tareasAdapter: TareasAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -261,10 +265,6 @@ class TareaFragment : Fragment() {
             tareaNueva = Tarea(args.tarea?.id,categoria, prioridad, pagado, estado, horas, valoracion, tecnico, descripcion)
             // Reemplazamos la tarea anterior por la nueva
             runBlocking { Repository.updateTareas(tareaNueva) }
-            //actualizamos el LiveData
-            ModelTempTareas.tareasLiveData.value = ModelTempTareas.tareas
-
-            //runBlocking { Repository.borrarTarea(args.tarea!!) }
         }
     }
 }
