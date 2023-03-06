@@ -1,12 +1,14 @@
 package net.iesochoa.jesusayala.practica5.model
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
-
+@Entity(tableName = "tareas")
 @Parcelize
 data class Tarea(
-    var id: Long?, val categoria: Int, val prioridad: Int, val pagado: Boolean,
+    @PrimaryKey(autoGenerate = true) var id: Long?, val categoria: Int, val prioridad: Int, val pagado: Boolean,
     val estado: Int, val horas: Int, val valoracion: Float, val tecnico: String,
     val descripcion: String): Parcelable {
 
