@@ -12,6 +12,7 @@ import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import net.iesochoa.jesusayala.practica5.R
@@ -222,8 +223,11 @@ class TareaFragment : Fragment() {
         if (binding.etTecnico.text.toString().isNullOrEmpty() || binding.etDescripcion.text.toString().isNullOrEmpty())
             Snackbar.make(binding.root, "Es necesario rellenar todos los campos",
                 Snackbar.LENGTH_LONG).setAction("Action", null).show()
-        else
+        else{
             guardaTarea()
+            val action = TareaFragmentDirections.actionTareaFragmentToListaFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun guardaTarea() {

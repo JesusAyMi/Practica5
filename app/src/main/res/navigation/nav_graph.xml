@@ -22,5 +22,8 @@
         <argument android:name="tarea"
             app:argType="net.iesochoa.jesusayala.practica5.model.Tarea"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_TareaFragment_to_ListaFragment"
+            app:destination="@id/ListaFragment" />
     </fragment>
 </navigation>

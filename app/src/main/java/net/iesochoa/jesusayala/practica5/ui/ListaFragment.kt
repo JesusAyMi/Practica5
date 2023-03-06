@@ -19,6 +19,7 @@ import net.iesochoa.jesusayala.practica5.databinding.FragmentListaBinding
 import net.iesochoa.jesusayala.practica5.databinding.ItemTareaBinding
 import net.iesochoa.jesusayala.practica5.model.Tarea
 import net.iesochoa.jesusayala.practica5.model.viewModel.ViewModels
+import net.iesochoa.jesusayala.practica5.repository.Repository
 import net.iesochoa.jesusayala.practica5.ui.adapters.TareasAdapter
 
 /**
@@ -51,19 +52,11 @@ class ListaFragment : Fragment() {
 
         iniciaRecyclerView()
         iniciaFiltros()
+        iniciaCRUD()
 
         viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
             //actualizaLista(lista)
             tareasAdapter.setLista(lista)
-        })
-
-        binding.fabNuevo.setOnClickListener {
-            val action = ListaFragmentDirections.actionEditar(null)
-            findNavController().navigate(action)
-        }
-
-        viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
-            actualizaLista(lista)
         })
 
     }
@@ -98,5 +91,36 @@ class ListaFragment : Fragment() {
             //le asignamos el adaptador
             adapter = tareasAdapter
         }
+    }
+
+    private fun iniciaCRUD(){
+        binding.fabNuevo.setOnClickListener {
+            val action = ListaFragmentDirections.actionEditar(null)
+            findNavController().navigate(action)
+        }
+
+        tareasAdapter.onTareaClickListener = object :
+            TareasAdapter.OnTareaClickListener {
+            //**************Editar Tarea*************
+            override fun onTareaClick(tarea: Tarea?) {
+            //creamos acción donde enviamos argumento la tarea para editarla
+                val action = ListaFragmentDirections.actionEditar(tarea)
+                findNavController().navigate(action)
+                if (tarea != null) {
+                    (requireActivity() as AppCompatActivity).supportActionBar?.title = "Tarea " + tarea.id
+                }
+            }
+            //***********Borrar Tarea************
+            override fun onTareaBorrarClick(tarea: Tarea?) {
+                if (tarea != null) {
+                    Repository.borrarTarea(tarea)
+                    viewModel.tareasLiveData.observe(viewLifecycleOwner, Observer<List<Tarea>> { lista ->
+                        //actualizaLista(lista)
+                        tareasAdapter.setLista(lista)
+                    })
+                }
+            }
+        }
+
     }
 }

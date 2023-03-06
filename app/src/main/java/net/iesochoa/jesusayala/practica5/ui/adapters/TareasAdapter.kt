@@ -12,7 +12,7 @@ import net.iesochoa.jesusayala.practica5.model.temp.ModelTempTareas.tareas
 class TareasAdapter ()
     : RecyclerView.Adapter<TareasAdapter.TareaViewHolder>(){
     var listaTareas: List<Tarea>?=null
-    private var onTareaClickListener:OnTareaClickListener?=null
+    var onTareaClickListener:OnTareaClickListener?=null
     fun setLista(lista:List<Tarea>){
         listaTareas=lista
         //notifica al adaptador que hay cambios y tiene que redibujar el ReciclerView
